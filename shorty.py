@@ -55,6 +55,17 @@ st.sidebar.write("")
 
 # We create a text input field for users to enter their API key.
 
+# Create a dropdown widget in the sidebar for model selection
+
+# Define a dictionary containing the available models and their API URLs
+model_options = {
+    "BART Large MNLI": "https://api-inference.huggingface.co/models/facebook/bart-large-mnli",
+    "SSTuning-ALBERT": "https://api-inference.huggingface.co/models/DAMO-NLP-SG/zero-shot-classify-SSTuning-ALBERT",
+    "Deberta Large": "https://api-inference.huggingface.co/models/MoritzLaurer/deberta-v3-large-zeroshot-v1.1-all-33",
+
+}
+selected_model = st.sidebar.selectbox("Select Model", list(model_options.keys()))
+
 API_KEY = st.sidebar.text_input(
     "Enter your HuggingFace API key",
     help="Once you created you HuggingFace account, you can get your free API token in your settings page: https://huggingface.co/settings/tokens",
@@ -62,7 +73,7 @@ API_KEY = st.sidebar.text_input(
 )
 
 # Adding the HuggingFace API inference URL.
-API_URL = "https://api-inference.huggingface.co/models/valhalla/distilbart-mnli-12-3"
+API_URL = model_options[selected_model]
 
 # Now, let's create a Python dictionary to store the API headers.
 headers = {"Authorization": f"Bearer {API_KEY}"}
@@ -305,9 +316,6 @@ with MainTab:
 
         cs, c1 = st.columns([2, 2])
 
-
-
-
         # The code below is for the download button
         # Cache the conversion to prevent computation on every rerun
 
@@ -327,5 +335,3 @@ with MainTab:
                 file_name="classification_results.csv",
                 mime="text/csv",
             )
-
-
